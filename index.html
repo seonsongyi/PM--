@@ -120,54 +120,55 @@
                 .result-header, .result-body {
                   padding: 10px 6px !important;
                 }
-                .score-section {
-                  flex-direction: column;
-                  align-items: flex-start;
-                  gap: 6px;
-                  padding: 10px 6px !important;
-                }
-                .notice, .score-date, .info-label, .multi-label {
-                  font-size: 0.7rem;
-                }
-                .score-highlight {
-                  font-size: 1.3rem;
-                }
-                .banner-pass, .banner-fail, .banner-exempt {
-                  font-size: 0.8rem;
-                  padding: 10px 6px;
-                }
-                .error-msg {
-                  font-size: 0.85rem;
-                  padding: 14px;
-                }
-                .container {
-                  min-width: 0;
-                }
-                .page-header {
-                  margin-bottom: 16px;
-                }
-                .page-header .subtitle {
-                  font-size: 0.7rem;
-                }
-                .logo-badge {
-                  font-size: 0.7rem;
-                  padding: 4px 10px;
-                }
-                .page-header h1 {
-                  font-size: 1.1rem;
-                }
-              }
-          body {
-            padding: 16px 4px;
-          }
-          .container {
-            padding: 18px 6px;
-            border-radius: 12px;
-            max-width: 100%;
-            box-shadow: 0 2px 8px rgba(79,70,229,0.08), 0 1px 2px rgba(0,0,0,0.04);
-          }
-          .page-header h1 {
-            font-size: 1.15rem;
+                <!DOCTYPE html>
+                <html lang="ko">
+                <head>
+                  <meta charset="UTF-8" />
+                  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+                  <title>PM역량인증시험 지필점수 조회</title>
+                  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+                  <style>
+                    * { box-sizing: border-box; margin: 0; padding: 0; }
+                    /* ...기존 CSS 전체... */
+                    /* (여기에 기존 스타일 전체가 들어갑니다. 이미 파일에 있던 모든 CSS를 이 영역에 둡니다) */
+                  </style>
+                </head>
+                <body>
+                  <div class="page-header">
+                    <div class="logo-badge">🏆 PM역량인증시험</div>
+                    <h1>지필점수 조회 시스템</h1>
+                    <p class="subtitle">2026년 · 본인의 사번을 입력하여 점수를 확인하세요</p>
+                  </div>
+                  <div class="container">
+                    <p class="search-label">사번 입력</p>
+                    <div class="search-box">
+                      <input type="text" id="sabun-input" placeholder="예: 216099" maxlength="15" onkeydown="if(event.key==='Enter') search()"/>
+                      <button onclick="search()">조회하기</button>
+                    </div>
+                    <p class="notice">사번 입력 후 Enter 또는 조회하기 버튼을 누르세요</p>
+                    <div id="result"></div>
+                  </div>
+                  <script>
+                    // 예시 데이터
+                    const DATA = {
+                      "987654": [{ "이름": "홍길동", "지필점수": 82 }],
+                      "123456": [{ "이름": "이철수", "지필점수": 87 }]
+                    };
+                    function search() {
+                      const sabun = document.getElementById('sabun-input').value.trim();
+                      const resultDiv = document.getElementById('result');
+                      if (!sabun || !DATA[sabun]) {
+                        resultDiv.style.display = 'block';
+                        resultDiv.innerHTML = '<div class="error-msg">해당 사번의 정보를 찾을 수 없습니다.<br>사번을 다시 확인해주세요.</div>';
+                        return;
+                      }
+                      const info = DATA[sabun][0];
+                      resultDiv.style.display = 'block';
+                      resultDiv.innerHTML = `<div class="result-card"><div class="result-header"><span class="name">${info.이름}</span></div><div class="result-body">지필점수: <span class="score-highlight">${info.지필점수}</span></div></div>`;
+                    }
+                  </script>
+                </body>
+                </html>
           }
           .logo-badge {
             font-size: 0.7rem;
