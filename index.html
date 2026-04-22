@@ -7,11 +7,215 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-        /* 반응형 웹: 모바일 대응 */
-        @media (max-width: 600px) {
-            /* ...기존 CSS 유지... */
-        }
-    /* 이하 모든 CSS는 <style>에 남기고, HTML/JS는 <body>로 이동 */
+    /* ======= 아래에 기존 CSS 전체를 모두 이 영역에만 두세요 ======= */
+    .container {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 24px rgba(79,70,229,0.10), 0 1px 4px rgba(0,0,0,0.06);
+      padding: 36px 40px;
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .search-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #4f46e5;
+      letter-spacing: 0.03em;
+      margin-bottom: 8px;
+    }
+    .search-box {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .search-box input {
+      flex: 1;
+      padding: 14px 18px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 0.97rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      color: #1f2937;
+      background: #f9fafb;
+    }
+    .search-box input:focus {
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.12);
+      background: #fff;
+    }
+    .search-box button {
+      padding: 14px 24px;
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      font-size: 0.97rem;
+      font-family: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+      white-space: nowrap;
+      letter-spacing: 0.01em;
+    }
+    .search-box button:hover { opacity: 0.9; }
+    .search-box button:active { transform: scale(0.97); }
+    .notice {
+      font-size: 0.78rem;
+      color: #9ca3af;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    #result { display: none; margin-top: 20px; }
+    .multi-label {
+      font-size: 0.82rem;
+      color: #4f46e5;
+      font-weight: 600;
+      margin-bottom: 12px;
+      padding: 8px 14px;
+      background: #eef2ff;
+      border-radius: 8px;
+      display: inline-block;
+    }
+    .result-card {
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(79,70,229,0.08);
+      margin-bottom: 16px;
+      border: 1px solid #e8eaf6;
+    }
+    .result-card:last-child { margin-bottom: 0; }
+    .result-header {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: #fff;
+      padding: 22px 26px 18px;
+    }
+    .result-header .name {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .result-header .position {
+      font-size: 0.85rem;
+      opacity: 0.8;
+      margin-top: 3px;
+    }
+    .result-header .exam-date {
+      margin-top: 12px;
+      background: rgba(255,255,255,0.18);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+    .result-body { padding: 20px 26px; background: #fff; }
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      margin-bottom: 4px;
+    }
+    .info-row {
+      display: flex;
+      flex-direction: column;
+      padding: 10px 0;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .info-row.full-width {
+      grid-column: 1 / -1;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 3px;
+    }
+    .info-value { color: #1f2937; font-weight: 500; font-size: 0.92rem; }
+    .email-link {
+      color: #4f46e5;
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 500;
+    }
+    .email-link:hover { text-decoration: underline; }
+    .score-section {
+      margin-top: 16px;
+      padding: 16px 20px;
+      background: linear-gradient(135deg, #eef2ff, #f5f3ff);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .score-left .score-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #6366f1;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .score-highlight { font-size: 2.2rem; font-weight: 700; color: #4f46e5; line-height: 1; }
+    .score-date { font-size: 0.78rem; color: #9ca3af; margin-top: 4px; }
+    .score-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .badge-pass { background: #dcfce7; color: #15803d; border: 1.5px solid #bbf7d0; }
+    .badge-fail { background: #fee2e2; color: #b91c1c; border: 1.5px solid #fecaca; }
+    .badge-exempt { background: #dbeafe; color: #1d4ed8; border: 1.5px solid #bfdbfe; }
+    .badge-pmp { background: #fef9c3; color: #854d0e; border: 1.5px solid #fde68a; }
+    .result-banner {
+      padding: 14px 20px;
+      border-radius: 0 0 14px 14px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      text-align: center;
+      letter-spacing: 0.01em;
+      line-height: 1.5;
+    }
+    .banner-pass {
+      background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+      color: #15803d;
+      border-top: 1px solid #bbf7d0;
+    }
+    .banner-fail {
+      background: linear-gradient(135deg, #fef3c7, #fde68a);
+      color: #92400e;
+      border-top: 1px solid #fde68a;
+    }
+    .banner-exempt {
+      background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+      color: #1e40af;
+      border-top: 1px solid #bfdbfe;
+    }
+    .error-msg {
+      text-align: center;
+      padding: 24px;
+      color: #b91c1c;
+      background: #fff1f2;
+      border-radius: 12px;
+      font-size: 0.95rem;
+      border: 1px solid #fecdd3;
+    }
   </style>
 </head>
 <body>
@@ -30,10 +234,63 @@
     <div id="result"></div>
   </div>
   <script>
-    // 예시 데이터
+    // 최신 엑셀 데이터 자동 반영 (이 부분은 read_excel.py에서 자동 갱신됩니다)
     const DATA = {
-      "987654": [{ "이름": "홍길동", "지필점수": 82 }],
-      "123456": [{ "이름": "이철수", "지필점수": 87 }]
+      "987654": [
+        {
+          "이름": "홍길동",
+          "직위": "사원",
+          "직급": "책임연구원",
+          "본부": "MS사업본부",
+          "사업부": "webOS SW개발그룹",
+          "담당": "webOS DevOps개발실",
+          "조직": "webOS PMO",
+          "지필점수": 82,
+          "지필면제여부": "면제",
+          "시험일자": "",
+          "차수": 0,
+          "기타": "",
+          "비고": "0차 합격",
+          "이메일": "jinyoung76.choi@lge.com"
+        }
+      ],
+      "123456": [
+        {
+          "이름": "이철수",
+          "직위": "선임",
+          "직급": "책임연구원",
+          "본부": "VS사업본부",
+          "사업부": "webOS SW개발그룹",
+          "담당": "클라우드플랫폼개발실",
+          "조직": "B2B기업/교육솔루션개발팀",
+          "지필점수": 87,
+          "지필면제여부": "면제",
+          "시험일자": "",
+          "차수": 1,
+          "기타": "",
+          "비고": "0차 합격",
+          "이메일": "dev.jaehyun.kim@lge.com"
+        }
+      ],
+      "123123": [
+        {
+          "이름": "김영희",
+          "직위": "책임연구원",
+          "직급": "책임연구원",
+          "본부": "교육서비스센터",
+          "사업부": "webOS SW개발그룹",
+          "담당": "차세대플랫폼개발실",
+          "조직": "교육서비스센터",
+          "지필점수": 50,
+          "지필면제여부": "탈락",
+          "시험일자": "",
+          "차수": 2,
+          "기타": "",
+          "비고": "0차 합격",
+          "이메일": "hyangjin2.lee@lge.com"
+        }
+      ]
+      // ... (엑셀에서 자동 생성된 데이터가 더 있을 수 있음) ...
     };
     function search() {
       const sabun = document.getElementById('sabun-input').value.trim();
@@ -48,8 +305,8 @@
       resultDiv.innerHTML = `<div class="result-card"><div class="result-header"><span class="name">${info.이름}</span></div><div class="result-body">지필점수: <span class="score-highlight">${info.지필점수}</span></div></div>`;
     }
   </script>
-  
 </body>
+</html>
                       }
                 .search-box {
                   display: flex !important;
