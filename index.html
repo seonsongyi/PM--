@@ -35,14 +35,12 @@
       background: linear-gradient(135deg, var(--primary), var(--primary-2));
       color: #fff;
       border-radius: 18px;
-      padding: 26px 28px;
+      padding: 20px 24px;
       box-shadow: 0 12px 24px rgba(79,70,229,0.18);
-      margin-bottom: 18px;
     }
     .title-box h1 {
       margin: 0 0 8px;
-      font-size: clamp(1.8rem, 2vw, 2.6rem);
-      letter-spacing: -0.03em;
+      font-size: clamp(1.7rem, 2vw, 2.3rem);
     }
     .title-box p {
       margin: 0;
@@ -50,14 +48,14 @@
       font-size: 0.96rem;
     }
     .title-icon {
-      display: inline-flex;
-      width: 34px;
-      height: 34px;
+      display: inline-block;
+      width: 32px;
+      height: 32px;
       border-radius: 10px;
       background: rgba(255,255,255,0.15);
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 10px;
+      text-align: center;
+      line-height: 32px;
+      margin-bottom: 8px;
       font-weight: 700;
     }
     .tabs {
@@ -65,166 +63,45 @@
       gap: 10px;
       flex-wrap: wrap;
       align-items: center;
-      margin: 0 0 18px;
+      margin: 18px 0 14px;
     }
     .tab {
       border: 1px solid #c7d2fe;
       background: #fff;
       color: var(--primary);
       border-radius: 999px;
-      padding: 9px 18px;
+      padding: 8px 14px;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.2s ease;
     }
     .tab.active {
       background: linear-gradient(135deg, var(--primary), var(--primary-2));
       color: #fff;
       border-color: transparent;
-      box-shadow: 0 8px 18px rgba(79,70,229,0.18);
     }
     .summary-row {
       display: grid;
-      grid-template-columns: repeat(5, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 12px;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
     .summary-box {
-      background: rgba(255,255,255,0.9);
+      background: var(--panel);
       border: 1px solid var(--line);
       border-radius: 14px;
-      padding: 16px;
+      padding: 14px 16px;
       box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
-      min-height: 96px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
     }
     .summary-label {
-      font-size: 0.76rem;
+      font-size: 0.75rem;
       letter-spacing: 0.04em;
+      text-transform: uppercase;
       color: var(--muted);
       margin-bottom: 8px;
     }
     .summary-value {
-      font-size: 2.2rem;
+      font-size: 1.6rem;
       font-weight: 800;
-      line-height: 1;
-      color: var(--ink);
-    }
-    .charts-row {
-      display: grid;
-      grid-template-columns: 1.1fr 1.4fr;
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-    .chart-card {
-      background: var(--panel);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
-      padding: 18px 20px;
-    }
-    .card-title {
-      font-size: 0.96rem;
-      font-weight: 700;
-      color: #374151;
-      margin-bottom: 16px;
-    }
-    .donut-wrap {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 22px;
-      min-height: 200px;
-    }
-    .donut {
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      position: relative;
-      box-shadow: inset 0 0 0 1px rgba(79, 70, 229, 0.08);
-    }
-    .donut::after {
-      content: "";
-      position: absolute;
-      inset: 28px;
-      background: white;
-      border-radius: 50%;
-      box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.12);
-    }
-    .donut-center {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-      font-size: 2rem;
-      color: var(--ink);
-      z-index: 1;
-    }
-    .donut-legend {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      min-width: 120px;
-    }
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.88rem;
-      color: #374151;
-    }
-    .legend-item strong { margin-left: auto; }
-    .legend-swatch {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      display: inline-block;
-    }
-    .bar-chart {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 14px;
-      height: 210px;
-      padding-top: 12px;
-    }
-    .chart-bar-group {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: end;
-      gap: 8px;
-      height: 100%;
-    }
-    .chart-bar-track {
-      width: 100%;
-      height: 150px;
-      display: flex;
-      align-items: end;
-      justify-content: center;
-      border-radius: 12px 12px 0 0;
-      background: linear-gradient(180deg, #f7f9ff, #eef2ff);
-      overflow: hidden;
-      padding: 6px;
-    }
-    .chart-bar {
-      width: 100%;
-      border-radius: 10px 10px 0 0;
-      min-height: 18px;
-      box-shadow: inset 0 -6px 12px rgba(255,255,255,0.15);
-    }
-    .chart-label, .chart-value {
-      font-size: 0.82rem;
-      color: var(--muted);
-      font-weight: 700;
-    }
-    .chart-value {
-      color: var(--ink);
     }
     .search-panel {
       background: var(--panel);
@@ -294,9 +171,8 @@
     .status.warn { background: #fef3c7; color: #92400e; }
     .status.bad { background: #fee2e2; color: #b91c1c; }
     .status.info { background: #dbeafe; color: #1d4ed8; }
-    @media (max-width: 980px) {
-      .summary-row { grid-template-columns: repeat(2, minmax(150px, 1fr)); }
-      .charts-row { grid-template-columns: 1fr; }
+    @media (max-width: 900px) {
+      .summary-row { grid-template-columns: repeat(2, minmax(140px, 1fr)); }
       .title-box h1 { font-size: 1.6rem; }
       .dashboard-wrap { max-width: 100%; }
       table { min-width: 1100px; }
@@ -314,22 +190,6 @@
 
     <div class="tabs" id="tabs"></div>
     <div class="summary-row" id="summary"></div>
-
-    <div class="charts-row">
-      <div class="chart-card">
-        <div class="card-title">진행 비율</div>
-        <div class="donut-wrap">
-          <div class="donut" id="donutChart">
-            <div class="donut-center">8</div>
-          </div>
-          <div class="donut-legend" id="donutLegend"></div>
-        </div>
-      </div>
-      <div class="chart-card">
-        <div class="card-title">차수별 인원</div>
-        <div class="bar-chart" id="barChart"></div>
-      </div>
-    </div>
 
     <div class="search-panel">
       <div class="search-box">
@@ -441,52 +301,6 @@
       ).join('');
     }
 
-    function renderCharts() {
-      const counts = { '0': 0, '1': 0, '2': 0, '3': 0 };
-      allRows.forEach(row => {
-        const c = String(row['차수']);
-        if (counts[c] !== undefined) counts[c] += 1;
-      });
-
-      const total = Math.max(1, allRows.length);
-      const palette = ['#4f46e5', '#7c3aed', '#a78bfa', '#c4b5fd'];
-      const donutStops = [];
-      let cursor = 0;
-      Object.entries(counts).forEach(([k, v], idx) => {
-        const pct = (v / total) * 100;
-        donutStops.push(`${palette[idx]} ${cursor}% ${cursor + pct}%`);
-        cursor += pct;
-      });
-
-      const donut = document.getElementById('donutChart');
-      donut.style.background = `conic-gradient(${donutStops.join(', ')})`;
-      donut.querySelector('.donut-center').textContent = total;
-
-      const barChart = document.getElementById('barChart');
-      const maxValue = Math.max(...Object.values(counts), 1);
-      barChart.innerHTML = Object.entries(counts).map(([k, v], idx) => {
-        const h = Math.max(18, (v / maxValue) * 100);
-        return `
-          <div class="chart-bar-group">
-            <div class="chart-bar-track">
-              <div class="chart-bar" style="height:${h}%; background:${palette[idx]};"></div>
-            </div>
-            <div class="chart-label">${k}차</div>
-            <div class="chart-value">${v}</div>
-          </div>
-        `;
-      }).join('');
-
-      const legend = document.getElementById('donutLegend');
-      legend.innerHTML = Object.entries(counts).map(([k, v], idx) => `
-        <div class="legend-item">
-          <span class="legend-swatch" style="background:${palette[idx]};"></span>
-          <span>${k}차</span>
-          <strong>${v}</strong>
-        </div>
-      `).join('');
-    }
-
     function cellFlag(v) {
       if (!v) return statusPill('', 'muted');
       const norm = String(v).trim().toUpperCase();
@@ -524,7 +338,6 @@
     function render() {
       renderTabs();
       renderSummary();
-      renderCharts();
       renderTable();
     }
 
