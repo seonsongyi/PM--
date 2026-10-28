@@ -2,172 +2,347 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PM역량인증시험 지필점수 조회</title>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LG SW Project Management 역량인증 현황</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Noto Sans KR', sans-serif; background: #f4f6fb; color: #222; }
-    .page-header { text-align: center; margin: 40px 0 24px 0; }
-    .logo-badge { display: inline-block; background: #4f46e5; color: #fff; border-radius: 16px; padding: 6px 16px; font-size: 0.92rem; font-weight: 700; margin-bottom: 10px; }
-    .page-header h1 { font-size: 2.1rem; font-weight: 700; margin: 10px 0 6px 0; letter-spacing: -0.01em; }
-    .subtitle { color: #6366f1; font-size: 1.05rem; margin-bottom: 0; }
-    .container { background: #fff; border-radius: 20px; box-shadow: 0 4px 24px rgba(79,70,229,0.10), 0 1px 4px rgba(0,0,0,0.06); padding: 36px 40px; width: 100%; max-width: 480px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .search-label { font-size: 0.82rem; font-weight: 600; color: #4f46e5; letter-spacing: 0.03em; margin-bottom: 8px; }
-    .search-box { display: flex; gap: 10px; margin-bottom: 8px; width: 100%; }
-    .search-box input { flex: 1; padding: 14px 18px; border: 1.5px solid #e5e7eb; border-radius: 12px; font-size: 0.97rem; font-family: inherit; outline: none; transition: border-color 0.2s, box-shadow 0.2s; color: #1f2937; background: #f9fafb; }
-    .search-box input:focus { border-color: #4f46e5; box-shadow: 0 0 0 3px rgba(79,70,229,0.12); background: #fff; }
-    .search-box button { padding: 14px 24px; background: linear-gradient(135deg, #4f46e5, #7c3aed); color: #fff; border: none; border-radius: 12px; font-size: 0.97rem; font-family: inherit; font-weight: 600; cursor: pointer; transition: opacity 0.2s, transform 0.1s; white-space: nowrap; letter-spacing: 0.01em; }
-    .search-box button:hover { opacity: 0.9; }
-    .search-box button:active { transform: scale(0.97); }
-    .notice { font-size: 0.78rem; color: #9ca3af; text-align: center; margin-bottom: 24px; }
-    #result { display: none; margin-top: 20px; width: 100%; }
-    .result-card { border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(79,70,229,0.08); margin-bottom: 16px; border: 1px solid #e8eaf6; background: #fff; }
-    .result-card:last-child { margin-bottom: 0; }
-    .result-header { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: #fff; padding: 22px 26px 18px; }
-    .result-header .name { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.01em; }
-    .result-header .position { font-size: 0.85rem; opacity: 0.8; margin-top: 3px; }
-    .result-header .exam-date { margin-top: 12px; background: rgba(255,255,255,0.18); display: inline-flex; align-items: center; gap: 5px; padding: 5px 14px; border-radius: 20px; font-size: 0.84rem; font-weight: 600; border: 1px solid rgba(255,255,255,0.25); }
-    .result-body { padding: 20px 26px; background: #fff; }
-    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-bottom: 4px; }
-    .info-row { display: flex; flex-direction: column; padding: 10px 0; border-bottom: 1px solid #f3f4f6; }
-    .info-row.full-width { grid-column: 1 / -1; }
-    .info-row:last-child { border-bottom: none; }
-    .info-label { font-size: 0.72rem; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
-    .info-value { color: #1f2937; font-weight: 500; font-size: 0.92rem; }
-    .email-link { color: #4f46e5; text-decoration: none; font-size: 0.92rem; font-weight: 500; }
-    .email-link:hover { text-decoration: underline; }
-    .score-section { margin-top: 16px; padding: 16px 20px; background: linear-gradient(135deg, #eef2ff, #f5f3ff); border-radius: 12px; display: flex; align-items: center; justify-content: space-between; }
-    .score-left .score-label { font-size: 0.72rem; font-weight: 600; color: #6366f1; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
-    .score-highlight { font-size: 2.2rem; font-weight: 700; color: #4f46e5; line-height: 1; }
-    .score-date { font-size: 0.78rem; color: #9ca3af; margin-top: 4px; }
-    .score-badge { display: inline-flex; align-items: center; padding: 6px 16px; border-radius: 30px; font-size: 0.85rem; font-weight: 700; letter-spacing: 0.02em; }
-    .badge-pass { background: #dcfce7; color: #15803d; border: 1.5px solid #bbf7d0; }
-    .badge-fail { background: #fee2e2; color: #b91c1c; border: 1.5px solid #fecaca; }
-    .badge-exempt { background: #dbeafe; color: #1d4ed8; border: 1.5px solid #bfdbfe; }
-    .badge-pmp { background: #fef9c3; color: #854d0e; border: 1.5px solid #fde68a; }
-    .result-banner { padding: 14px 20px; border-radius: 0 0 14px 14px; font-size: 0.92rem; font-weight: 600; text-align: center; letter-spacing: 0.01em; line-height: 1.5; }
-    .banner-pass { background: linear-gradient(135deg, #dcfce7, #bbf7d0); color: #15803d; border-top: 1px solid #bbf7d0; }
-    .banner-fail { background: linear-gradient(135deg, #fef3c7, #fde68a); color: #92400e; border-top: 1px solid #fde68a; }
-    .banner-exempt { background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: #1e40af; border-top: 1px solid #bfdbfe; }
-    .error-msg { text-align: center; padding: 24px; color: #b91c1c; background: #fff1f2; border-radius: 12px; font-size: 0.95rem; border: 1px solid #fecdd3; }
+    :root {
+      --bg: #f5f7ff;
+      --panel: #ffffff;
+      --ink: #1f2937;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --primary: #4f46e5;
+      --primary-2: #7c3aed;
+      --good: #10b981;
+      --warn: #f59e0b;
+      --bad: #ef4444;
+      --chip: #eef2ff;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Noto Sans KR", "Malgun Gothic", sans-serif;
+    }
+    body { padding: 24px; }
+    .dashboard-wrap {
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    .title-box {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: #fff;
+      border-radius: 18px;
+      padding: 20px 24px;
+      box-shadow: 0 12px 24px rgba(79,70,229,0.18);
+    }
+    .title-box h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.7rem, 2vw, 2.3rem);
+    }
+    .title-box p {
+      margin: 0;
+      opacity: 0.9;
+      font-size: 0.96rem;
+    }
+    .title-icon {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.15);
+      text-align: center;
+      line-height: 32px;
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    .tabs {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin: 18px 0 14px;
+    }
+    .tab {
+      border: 1px solid #c7d2fe;
+      background: #fff;
+      color: var(--primary);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .tab.active {
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      color: #fff;
+      border-color: transparent;
+    }
+    .summary-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .summary-box {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.04);
+    }
+    .summary-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+    .summary-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+    }
+    .search-panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+      margin-bottom: 12px;
+    }
+    .search-box {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+    .search-box input {
+      width: 100%;
+      border: 1px solid #dbe1f2;
+      background: #fafbff;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.96rem;
+    }
+    .search-result {
+      color: var(--muted);
+      font-size: 0.82rem;
+      padding: 0 16px 12px;
+    }
+    .table-panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.04);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    thead th {
+      background: #edf2ff;
+      color: #3730a3;
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-align: left;
+      padding: 10px 10px;
+      border-bottom: 1px solid var(--line);
+    }
+    tbody td {
+      padding: 9px 10px;
+      border-bottom: 1px solid #edf2f7;
+      font-size: 0.87rem;
+      vertical-align: top;
+      word-break: break-word;
+    }
+    tbody tr:hover { background: #fafbff; }
+    .status {
+      display: inline-block;
+      min-width: 48px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      text-align: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .status.ok { background: #dcfce7; color: #166534; }
+    .status.muted { background: #f1f5f9; color: #475569; }
+    .status.warn { background: #fef3c7; color: #92400e; }
+    .status.bad { background: #fee2e2; color: #b91c1c; }
+    .status.info { background: #dbeafe; color: #1d4ed8; }
+    @media (max-width: 900px) {
+      .summary-row { grid-template-columns: repeat(2, minmax(140px, 1fr)); }
+      .title-box h1 { font-size: 1.6rem; }
+      .dashboard-wrap { max-width: 100%; }
+      table { min-width: 1100px; }
+      .table-panel { overflow-x: auto; }
+    }
   </style>
 </head>
 <body>
-  <div class="page-header">
-    <div class="logo-badge">🏆 PM역량인증시험</div>
-    <h1>지필점수 조회 시스템</h1>
-    <p class="subtitle">2026년 · 본인의 사번을 입력하여 점수를 확인하세요</p>
-  </div>
-  <div class="container">
-    <p class="search-label">사번 입력</p>
-    <div class="search-box">
-      <input type="text" id="sabun-input" placeholder="예: 216099" maxlength="15" onkeydown="if(event.key==='Enter') search()"/>
-      <button onclick="search()">조회하기</button>
+  <div class="dashboard-wrap">
+    <div class="title-box">
+      <div class="title-icon">✦</div>
+      <h1>LG SW Project Management 역량인증 현황</h1>
+      <p>실시간 데이터 기준으로 0차, 1차, 2차, 3차, 전체 수치가 함께 표시됩니다.</p>
     </div>
-    <p class="notice">사번 입력 후 Enter 또는 조회하기 버튼을 누르세요</p>
-    <div id="result"></div>
+
+    <div class="tabs" id="tabs"></div>
+    <div class="summary-row" id="summary"></div>
+
+    <div class="search-panel">
+      <div class="search-box">
+        <input id="searchInput" type="text" placeholder="이름 또는 사번 검색" />
+      </div>
+      <div class="search-result">검색 결과: <strong id="resultCount">0건</strong></div>
+    </div>
+
+    <div class="table-panel">
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 80px;">차수</th>
+            <th style="width: 110px;">사번</th>
+            <th style="width: 120px;">이름</th>
+            <th style="width: 120px;">직위</th>
+            <th style="width: 200px;">본부</th>
+            <th style="width: 220px;">조직</th>
+            <th style="width: 110px;">지필점수</th>
+            <th style="width: 120px;">면제</th>
+            <th style="width: 160px;">비고</th>
+            <th style="width: 120px;">프로젝트개요</th>
+            <th style="width: 120px;">1차 산출물</th>
+            <th style="width: 120px;">2차 산출물</th>
+            <th style="width: 120px;">발표 문서</th>
+            <th style="width: 120px;">최종합격</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
   </div>
+
   <script>
-    // 최신 엑셀 데이터 자동 반영 (이 부분은 read_excel.py에서 자동 갱신됩니다)
-const DATA = {
-  "987654": [
-    {
-      "이름": "홍길동",
-      "직위": "사원",
-      "직급": "책임연구원",
-      "본부": "MS사업본부",
-      "사업부": "webOS SW개발그룹",
-      "담당": "webOS DevOps개발실",
-      "조직": "webOS PMO",
-      "지필점수": 82,
-      "지필면제여부": "면제",
-      "시험일자": "",
-      "차수": 0,
-      "기타": "",
-      "비고": "0차 합격",
-      "이메일": "jinyoung76.choi@lge.com"
+    const initialRows = [
+      { 차수: '0', 사번: '216099', 이름: '금정현', 직위: '책임연구원', 본부: 'MS사업본부', 조직: 'webOS PMO', 지필점수: '82', 면제: '면제', 비고: '0차 합격', 프로젝트개요: '-', '1차_산출물_제출': '-', '2차_산출물_제출': '-', '발표_문서_제출': '-', 최종합격: 'O' },
+      { 차수: '0', 사번: '268140', 이름: '김범준', 직위: '책임연구원', 본부: 'MS사업본부', 조직: 'B2B기업/교육솔루션개발팀', 지필점수: '87', 면제: '면제', 비고: '0차 합격', 프로젝트개요: '-', '1차_산출물_제출': '-', '2차_산출물_제출': '-', '발표_문서_제출': '-', 최종합격: 'O' },
+      { 차수: '1', 사번: '250101', 이름: '김우식', 직위: '책임연구원', 본부: 'MS사업본부', 조직: 'webOS PMO', 지필점수: '78', 면제: '-', 비고: '1차 합격', 프로젝트개요: 'O', '1차_산출물_제출': 'O', '2차_산출물_제출': '-', '발표_문서_제출': '-', 최종합격: 'O' },
+      { 차수: '1', 사번: '257420', 이름: '박지수', 직위: '선임연구원', 본부: 'MS사업본부', 조직: 'AI서비스개발팀', 지필점수: '85', 면제: '-', 비고: '1차 합격', 프로젝트개요: 'O', '1차_산출물_제출': 'O', '2차_산출물_제출': 'O', '발표_문서_제출': 'O', 최종합격: 'O' },
+      { 차수: '2', 사번: '232010', 이름: '신준호', 직위: '책임연구원', 본부: 'VS사업본부', 조직: 'B2B클라우드솔루션개발팀', 지필점수: '91', 면제: '-', 비고: '2차 합격', 프로젝트개요: 'O', '1차_산출물_제출': 'O', '2차_산출물_제출': 'O', '발표_문서_제출': 'O', 최종합격: 'O' },
+      { 차수: '2', 사번: '243115', 이름: '이현주', 직위: '선임연구원', 본부: '교육서비스센터', 조직: '교육솔루션개발팀', 지필점수: '88', 면제: '-', 비고: '2차 합격', 프로젝트개요: 'O', '1차_산출물_제출': 'O', '2차_산출물_제출': 'O', '발표_문서_제출': 'O', 최종합격: 'O' },
+      { 차수: '3', 사번: '262230', 이름: '최민호', 직위: '책임연구원', 본부: 'MS사업본부', 조직: 'webOS PMO', 지필점수: '84', 면제: '면제', 비고: '3차 합격', 프로젝트개요: 'O', '1차_산출물_제출': 'O', '2차_산출물_제출': 'O', '발표_문서_제출': 'O', 최종합격: 'O' },
+      { 차수: '3', 사번: '276485', 이름: '오우진', 직위: '책임연구원', 본부: 'MS사업본부', 조직: 'webOS PMO', 지필점수: 'PMP자격보유', 면제: '면제', 비고: '3차 불합격 → 재도전', 프로젝트개요: '-', '1차_산출물_제출': '-', '2차_산출물_제출': '-', '발표_문서_제출': '-', 최종합격: 'X' }
+    ];
+
+    const allRows = initialRows;
+    const tabs = ['전체', '0', '1', '2', '3'];
+    const state = { cycle: '전체' };
+
+    function value(row, key) {
+      const v = row[key];
+      return v === null || v === undefined ? '' : String(v).trim();
     }
-  ],
-  "123456": [
-    {
-      "이름": "이철수",
-      "직위": "선임",
-      "직급": "책임연구원",
-      "본부": "VS사업본부",
-      "사업부": "webOS SW개발그룹",
-      "담당": "클라우드플랫폼개발실",
-      "조직": "B2B기업/교육솔루션개발팀",
-      "지필점수": 87,
-      "지필면제여부": "면제",
-      "시험일자": "",
-      "차수": 1,
-      "기타": "",
-      "비고": "0차 합격",
-      "이메일": "dev.jaehyun.kim@lge.com"
+
+    function statusPill(v, type = 'ok') {
+      const text = v || '-';
+      const className = {
+        ok: 'status ok',
+        muted: 'status muted',
+        warn: 'status warn',
+        bad: 'status bad',
+        info: 'status info'
+      }[type] || 'status muted';
+      return '<span class="' + className + '">' + text + '</span>';
     }
-  ],
-  "123123": [
-    {
-      "이름": "김영희",
-      "직위": "책임연구원",
-      "직급": "책임연구원",
-      "본부": "교육서비스센터",
-      "사업부": "webOS SW개발그룹",
-      "담당": "차세대플랫폼개발실",
-      "조직": "교육서비스센터",
-      "지필점수": 50,
-      "지필면제여부": "탈락",
-      "시험일자": "",
-      "차수": 2,
-      "기타": "",
-      "비고": "0차 합격",
-      "이메일": "hyangjin2.lee@lge.com"
+
+    function renderTabs() {
+      const container = document.getElementById('tabs');
+      container.innerHTML = tabs.map(c => {
+        const active = state.cycle === c ? 'active' : '';
+        const label = c === '전체' ? '전체' : c + '차';
+        return '<button class="tab ' + active + '" data-cycle="' + c + '">' + label + '</button>';
+      }).join('');
+
+      container.querySelectorAll('.tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.cycle = btn.dataset.cycle;
+          render();
+        });
+      });
     }
-  ]
-};
-    function search() {
-      const sabun = document.getElementById('sabun-input').value.trim();
-      const resultDiv = document.getElementById('result');
-      if (!sabun || !DATA[sabun]) {
-        resultDiv.style.display = 'block';
-        resultDiv.innerHTML = '<div class="error-msg">해당 사번의 정보를 찾을 수 없습니다.<br>사번을 다시 확인해주세요.</div>';
-        return;
-      }
-      const info = DATA[sabun][0];
-      resultDiv.style.display = 'block';
-      resultDiv.innerHTML = `
-        <div class="result-card">
-          <div class="result-header">
-            <span class="name">${info.이름}</span>
-            <span class="position">${info.직위 || ''}</span>
-            <span class="exam-date">${info.시험일자 || ''}</span>
-          </div>
-          <div class="result-body">
-            <div class="info-grid">
-              <div class="info-row"><span class="info-label">본부</span><span class="info-value">${info.본부 || ''}</span></div>
-              <div class="info-row"><span class="info-label">사업부</span><span class="info-value">${info.사업부 || ''}</span></div>
-              <div class="info-row"><span class="info-label">담당</span><span class="info-value">${info.담당 || ''}</span></div>
-              <div class="info-row"><span class="info-label">조직</span><span class="info-value">${info.조직 || ''}</span></div>
-              <div class="info-row full-width"><span class="info-label">이메일</span><span class="info-value"><a class="email-link" href="mailto:${info.이메일}">${info.이메일}</a></span></div>
-            </div>
-            <div class="score-section">
-              <div class="score-left">
-                <div class="score-label">지필점수</div>
-                <div class="score-highlight">${info.지필점수}</div>
-                <div class="score-date">${info.지필면제여부 ? info.지필면제여부 : ''}</div>
-              </div>
-              <div class="score-badge ${info.지필면제여부 === '면제' ? 'badge-exempt' : (parseInt(info.지필점수,10) >= 60 ? 'badge-pass' : 'badge-fail')}">
-                ${info.지필면제여부 === '면제' ? '면제' : (parseInt(info.지필점수,10) >= 60 ? '합격' : '불합격')}
-              </div>
-            </div>
-            <div class="result-banner ${info.지필면제여부 === '면제' ? 'banner-exempt' : (parseInt(info.지필점수,10) >= 60 ? 'banner-pass' : 'banner-fail')}">
-              ${info.비고 || ''}
-            </div>
-          </div>
-        </div>
-      `;
+
+    function getFilteredRows() {
+      const keyword = document.getElementById('searchInput').value.toLowerCase();
+      return allRows.filter(row => {
+        const cycleMatch = state.cycle === '전체' || String(row['차수']) === String(state.cycle);
+        const nameMatch = !keyword || String(row['이름']).toLowerCase().includes(keyword) || String(row['사번']).toLowerCase().includes(keyword);
+        return cycleMatch && nameMatch;
+      });
     }
+
+    function renderSummary() {
+      const counts = { 전체: allRows.length, 0: 0, 1: 0, 2: 0, 3: 0 };
+      allRows.forEach(row => {
+        const c = String(row['차수']);
+        if (counts[c] !== undefined) counts[c] += 1;
+      });
+
+      const cards = [
+        { label: '전체 인원', value: counts['전체'] },
+        { label: '0차', value: counts['0'] },
+        { label: '1차', value: counts['1'] },
+        { label: '2차', value: counts['2'] },
+        { label: '3차', value: counts['3'] }
+      ];
+
+      document.getElementById('summary').innerHTML = cards.map(card =>
+        '<div class="summary-box"><div class="summary-label">' + card.label + '</div><div class="summary-value">' + card.value + '</div></div>'
+      ).join('');
+    }
+
+    function cellFlag(v) {
+      if (!v) return statusPill('', 'muted');
+      const norm = String(v).trim().toUpperCase();
+      if (norm === 'O') return statusPill('O', 'ok');
+      if (norm === 'X') return statusPill('X', 'bad');
+      return statusPill(norm, 'info');
+    }
+
+    function renderTable() {
+      const rows = getFilteredRows();
+      const tbody = document.getElementById('tbody');
+      const resultCount = document.getElementById('resultCount');
+      resultCount.textContent = rows.length + '건';
+
+      tbody.innerHTML = rows.map(row => `
+        <tr>
+          <td>${value(row, '차수')}</td>
+          <td>${value(row, '사번')}</td>
+          <td>${value(row, '이름')}</td>
+          <td>${value(row, '직위')}</td>
+          <td>${value(row, '본부')}</td>
+          <td>${value(row, '조직')}</td>
+          <td>${value(row, '지필점수')}</td>
+          <td>${value(row, '면제') || '-'}</td>
+          <td>${value(row, '비고') || '-'}</td>
+          <td>${cellFlag(value(row, '프로젝트개요'))}</td>
+          <td>${cellFlag(value(row, '1차_산출물_제출'))}</td>
+          <td>${cellFlag(value(row, '2차_산출물_제출'))}</td>
+          <td>${cellFlag(value(row, '발표_문서_제출'))}</td>
+          <td>${cellFlag(value(row, '최종합격'))}</td>
+        </tr>
+      `).join('');
+    }
+
+    function render() {
+      renderTabs();
+      renderSummary();
+      renderTable();
+    }
+
+    document.getElementById('searchInput').addEventListener('input', renderTable);
+    render();
   </script>
 </body>
 </html>
